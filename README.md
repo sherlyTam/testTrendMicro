@@ -13,18 +13,18 @@ The package is targeting the latest runtime of AWS Lambda. ([14.x](https://docs.
 
 ## Settings
 
-If you prefer to use a different region or stage, change these:
+If you prefer to use a different region or stage, update these:
 
-```sh
-$ export AWS_STAGE=
-$ export AWS_REGION=
+```serverless.yml
+  stage: dev
+  region: ap-southeast-2
 ```
 
 Defaults are `dev` and `ap-southeast-2`.
 
 Change name of user table:
 
-```yaml
+```serverles.yml
 USER_TABLE: `user-${stage}`
 ```
 
@@ -42,6 +42,10 @@ e.g. curl --request GET --url https://nw9224uaoi.execute-api.ap-southeast-2.amaz
 Issue a `POST` request with the information required to create a user to create a user in the dynamo table:
 
 ```sh
+curl --location --request POST  https://{ServiceId}.execute-api.{REGION}.amazonaws.com/dev/users \
+--header 'Content-Type: application/json' \
+--data-raw '{JSON_DATA}'
+e.g.
 curl --location --request POST 'https://nw9224uaoi.execute-api.ap-southeast-2.amazonaws.com/dev/users' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -62,18 +66,9 @@ Running all tests:
 $ yarn test
 ```
 
-Developing tests:
-
+Code coverage :
 ```bash
-$ npx jest --watch
-```
-
-### Develop locally
-
-Starting a local dev server and its endpoint for receiving uploads:
-
-```bash
-$ yarn start
+$ yarn coverage
 ```
 
 ### Linter
