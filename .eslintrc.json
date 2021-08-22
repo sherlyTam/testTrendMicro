@@ -1,8 +1,7 @@
 {
     "env": {
         "node": true,
-        "commonjs": true,
-        "es2021": true
+        "commonjs": true
     },
     "extends": [
         "prettier",
@@ -13,6 +12,7 @@
         "ecmaVersion": 12
     },
     "rules": {
-      "prettier/prettier": "error"
+      "linebreak-style": ["error", "windows"],
+      "indent": 0
     }
 }

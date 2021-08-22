@@ -5,17 +5,16 @@
   "author": "Sherly",
   "license": "",
   "scripts": {
-    "codecov": "codecov",
-    "coverage": "npm run test && npm run codecov",
+    "coverage": "jest --coverage",
     "deploy": "serverless deploy --verbose",
     "lint": "eslint .",
     "test": "jest"
   },
   "dependencies": {
+    "aws-sdk": "^2.12.0",
     "bluebird": "^3.4.7",
     "ramda": "^0.23.0",
-    "uuid": "^2.0.3",
-    "aws-sdk": "^2.12.0"
+    "uuid": "^2.0.3"
   },
   "devDependencies": {
     "aws-sdk-mock": "^5.2.2",
@@ -27,6 +26,8 @@
     "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-prettier": "^3.4.1",
     "jest": "^27.0.6",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "prettier-eslint": "^13.0.0",
+    "prettier-eslint-cli": "^5.0.1"
   }
 }
