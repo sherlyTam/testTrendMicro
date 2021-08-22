@@ -1,10 +1,10 @@
 const AWSMock = require('aws-sdk-mock');
 const util = require('util');
-const AWS = require('aws-sdk');
-const userLambda = require('../src/api/user.js');
+const user = require('../src/api/user.js');
 const eventStub = require('./stubs/eventApiGatewayCreateUser.json');
 
-const handler = util.promisify(userLambda);
+const handlerSubmit = util.promisify(user.submit);
+const handlerList = util.promisify(user.list);
 
 describe('User service test: Dynamodb mock for successful operations', () => {
   beforeAll(() => {
@@ -17,15 +17,14 @@ describe('User service test: Dynamodb mock for successful operations', () => {
         password: '@123as',
       });
     });
+    AWSMock.mock('DynamoDB', 'putItem', (method, _, callback) => {
+      callback(null, "Successfully created Item!");
+    });
   });
 
   afterEach(() => {
     delete process.env.USER_TABLE;
     delete process.env.KMS_PASSWORD_ENCRYPT_KEY;
-  });
-
-  afterAll(() => {
-    AWS.restore('DynamoDb');
   });
 
   test('Replies back with a JSON for get', () => {
@@ -35,7 +34,18 @@ describe('User service test: Dynamodb mock for successful operations', () => {
     const event = eventStub;
     const context = {};
 
-    const result = handler(event, context);
+    const result = handlerList(event, context);
+    expect(result).resolves.toMatchSnapshot();
+  });
+
+  test('Replies back with success message for put', () => {
+    process.env.USER_TABLE = 'foo';
+    process.env.KMS_PASSWORD_ENCRYPT_KEY = 'bar';
+
+    const event = eventStub;
+    const context = {};
+
+    const result = handlerSubmit(event, context);
     expect(result).resolves.toMatchSnapshot();
   });
 });
