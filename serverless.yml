@@ -1,0 +1,61 @@
+service: user-service
+
+frameworkVersion: ">=1.1.0 <2.60.0"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: ap-southeast-2
+  environment:
+    USER_TABLE: user-${opt:stage, self:provider.stage}
+    KMS_PASSWORD_ENCRYPT_KEY: arn:aws:kms:ap-southeast-2:045926928876:key/58740438-8ccd-4924-a206-8f7c233dec10
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/user-*"
+
+functions:
+  userSubmission:
+    handler: src/api/user.submit
+    memorySize: 128
+    description: Submit user information
+    events:
+      - http: 
+          path: users
+          method: post
+          cors: true
+  listUsers:
+    handler: src/api/user.list
+    memorySize: 128
+    description: List all users
+    events:
+      - http: 
+          path: users
+          method: get
+          cors: true                 
+
+resources:
+  Resources:
+    UsersDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: "id"
+            AttributeType: "S"   
+        KeySchema:
+          -
+            AttributeName: "id"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        StreamSpecification:
+          StreamViewType: "NEW_IMAGE"
+        TableName: ${self:provider.environment.USER_TABLE}
