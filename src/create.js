@@ -66,7 +66,7 @@ module.exports.create = async (event) => {
     await dynamoDb.put(params).promise();
     return {
       statusCode: 201,
-      body: {},
+      body: `Successfully submitted user with email id - ${params.Item.email}`,
     };
   } catch (err) {
     console.error(`Failed to create user ${err}`);
