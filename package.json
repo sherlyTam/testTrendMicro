@@ -1,9 +1,9 @@
 {
   "name": "user-service",
   "version": "1.0.0",
-  "description": "REST API backend for user",
+  "description": "Apis to create/ list users persisted in DynamoDb table",
   "author": "Sherly",
-  "license": "",
+  "license": "MIT",
   "scripts": {
     "coverage": "jest --coverage",
     "deploy": "serverless deploy --verbose",
@@ -11,14 +11,16 @@
     "test": "jest"
   },
   "dependencies": {
-    "aws-sdk": "^2.12.0",
-    "bluebird": "^3.4.7",
-    "ramda": "^0.23.0",
-    "uuid": "^2.0.3"
+    "aws-sdk": "^2.973.0",
+    "aws-sdk-mock": "^5.2.2",
+    "bluebird": "^3.7.2",
+    "serverless": "^2.55.0",
+    "faker": "^5.5.3",
+    "joi": "^17.4.2",
+    "serverless-dynamodb-client": "^0.0.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "aws-sdk-mock": "^5.2.2",
-    "codecov": "^3.8.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",

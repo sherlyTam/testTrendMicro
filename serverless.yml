@@ -1,6 +1,6 @@
 service: user-service
 
-frameworkVersion: ">=1.1.0 <2.60.0"
+frameworkVersion: "2.55.0"
 
 provider:
   name: aws
@@ -21,7 +21,7 @@ provider:
 
 functions:
   userSubmission:
-    handler: src/api/user.submit
+    handler: src/create.create
     memorySize: 128
     description: Submit user information
     events:
@@ -30,7 +30,7 @@ functions:
           method: post
           cors: true
   listUsers:
-    handler: src/api/user.list
+    handler: src/list.list
     memorySize: 128
     description: List all users
     events:
@@ -56,6 +56,4 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-        StreamSpecification:
-          StreamViewType: "NEW_IMAGE"
         TableName: ${self:provider.environment.USER_TABLE}

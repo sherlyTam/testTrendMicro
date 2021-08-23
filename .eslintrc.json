@@ -13,6 +13,20 @@
     },
     "rules": {
       "linebreak-style": ["error", "windows"],
-      "indent": 0
-    }
+      "arrow-body-style": 0,
+      "no-console":0
+    },
+    "overrides": [
+        {
+          "files": [
+            "**/*.spec.js",
+            "**/*.spec.jsx",
+            "**/*.test.js",
+            "**/*.test.jsx"
+          ],
+          "env": {
+            "jest": true
+          }
+        }
+      ]
 }
