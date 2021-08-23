@@ -20,6 +20,7 @@ module.exports.list = async (event) => {
 
   const params = {
     TableName: process.env.USER_TABLE,
+    ProjectionExpression: 'id, firstName, lastName, userName, email',
   };
 
   try {

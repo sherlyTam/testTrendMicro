@@ -12,8 +12,10 @@ afterEach(() => {
 });
 
 test('create - ensure getRandomMockedInputUser returns a value ', async () => {
-  const user = getRandomMockedInputUser();
-  expect(user).not.toBe(undefined);
+  const user1 = getRandomMockedInputUser();
+  const user2 = getRandomMockedInputUser();
+  expect(user1).not.toBe(undefined);
+  expect(user2).not.toBe(undefined);
 });
 
 test('create - should create a user', async () => {

@@ -29,11 +29,6 @@ functions:
           path: users
           method: post
           cors: true
-          response: {
-            headers: {
-              'Content-Type': 'application/vnd.api+json'
-            }
-          }
   listUsers:
     handler: src/list.list
     memorySize: 128
@@ -42,12 +37,7 @@ functions:
       - http: 
           path: users
           method: get
-          cors: true  
-          response: {
-            headers: {
-              'Content-Type': 'application/vnd.api+json'
-            }
-          }
+          cors: true
 
 resources:
   Resources:

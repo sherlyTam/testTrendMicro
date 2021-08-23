@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1629752969288" clover="3.2.0">
-  <project timestamp="1629752969288" name="All files">
+<coverage generated="1629753467138" clover="3.2.0">
+  <project timestamp="1629753467138" name="All files">
     <metrics statements="99" coveredstatements="99" conditionals="20" coveredconditionals="20" methods="12" coveredmethods="12" elements="131" coveredelements="131" complexity="0" loc="99" ncloc="99" packages="2" files="5" classes="5"/>
     <package name="lib">
       <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
@@ -72,12 +72,12 @@
         <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
         <line num="21" count="2" type="stmt"/>
-        <line num="25" count="2" type="stmt"/>
         <line num="26" count="2" type="stmt"/>
-        <line num="27" count="1" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
         <line num="28" count="1" type="stmt"/>
-        <line num="33" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
         <line num="34" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
       </file>
       <file name="test-utils.js" path="D:\personal\testTrendMicro\src\test-utils.js">
         <metrics statements="39" coveredstatements="39" conditionals="8" coveredconditionals="8" methods="6" coveredmethods="6"/>
@@ -97,7 +97,7 @@
         <line num="29" count="2" type="stmt"/>
         <line num="30" count="2" type="stmt"/>
         <line num="32" count="2" type="stmt"/>
-        <line num="33" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="4" type="cond" truecount="2" falsecount="0"/>
         <line num="35" count="2" type="stmt"/>
         <line num="37" count="2" type="stmt"/>
         <line num="38" count="4" type="stmt"/>
