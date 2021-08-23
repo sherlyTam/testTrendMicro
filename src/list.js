@@ -1,11 +1,10 @@
-const ddb = require('serverless-dynamodb-client');
 const AWS = require('aws-sdk');
 const checker = require('../lib/envVarsChecker');
 
 AWS.config.setPromisesDependency(require('bluebird'));
 
 module.exports.list = async (event) => {
-  const dynamoDb = ddb.doc;
+  const dynamoDb = new AWS.DynamoDB.DocumentClient();
   console.log('Receieved request submit user details. Event is', event);
 
   // ensure env vars set

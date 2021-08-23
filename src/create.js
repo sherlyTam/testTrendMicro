@@ -1,6 +1,5 @@
 const Joi = require('joi');
 const uuid = require('uuid');
-const ddb = require('serverless-dynamodb-client');
 const AWS = require('aws-sdk');
 const checker = require('../lib/envVarsChecker');
 
@@ -22,7 +21,7 @@ const encryptUserPasswordP = (credentials) => {
 };
 
 module.exports.create = async (event) => {
-  const dynamoDb = ddb.doc;
+  const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
   console.log('Receieved request submit user details. Event is', event);
 
@@ -67,7 +66,7 @@ module.exports.create = async (event) => {
     await dynamoDb.put(params).promise();
     return {
       statusCode: 201,
-      body: JSON.stringify(params.Item),
+      body: {},
     };
   } catch (err) {
     console.error(`Failed to create user ${err}`);

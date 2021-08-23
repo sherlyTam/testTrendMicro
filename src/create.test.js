@@ -26,11 +26,6 @@ test('create - should create a user', async () => {
   const res = await create(event);
 
   expect(res.statusCode).toBe(201);
-
-  const expected = Object.keys(user).concat(['id']).sort();
-  const actual = Object.keys(JSON.parse(res.body)).sort();
-
-  expect(actual).toEqual(expected);
 });
 
 test('create - should fail on an missing env variable', async () => {
