@@ -136,16 +136,7 @@
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a>
-<a name='L83'></a><a href='#L83'>83</a>
-<a name='L84'></a><a href='#L84'>84</a>
-<a name='L85'></a><a href='#L85'>85</a>
-<a name='L86'></a><a href='#L86'>86</a>
-<a name='L87'></a><a href='#L87'>87</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -154,6 +145,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -177,7 +169,6 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,7 +187,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -218,10 +208,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -229,17 +215,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
-&nbsp;
-const Joi = require('joi');
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const Joi = require('joi');
 const uuid = require('uuid');
 const ddb = require('serverless-dynamodb-client');
-var AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
 const checker = require('../lib/envVarsChecker');
 &nbsp;
 AWS.config.setPromisesDependency(require('bluebird'));
 &nbsp;
 const config = require('./config');
+&nbsp;
 const schema = Joi.object().keys(config.schemas.user);
 &nbsp;
 const encryptUserPasswordP = (credentials) =&gt; {
@@ -249,7 +234,7 @@ const encryptUserPasswordP = (credentials) =&gt; {
     Plaintext: credentials,
   };
   return kms.encrypt(params).promise().then((data) =&gt; {
-  return data.CiphertextBlob.toString('base64');
+    return data.CiphertextBlob.toString('base64');
   });
 };
 &nbsp;
@@ -258,18 +243,17 @@ module.exports.create = async (event) =&gt; {
 &nbsp;
   console.log('Receieved request submit user details. Event is', event);
 &nbsp;
-  //ensure env vars set
+  // ensure env vars set
   const missing = checker(process.env);
   if (missing.length) {
     const vars = missing.join(', ');
     return {
       statusCode: 400,
-      headers: { 'Content-Type': 'text/plain' },
       body: `Missing required environment variables: ${vars}`,
     };
   }
 &nbsp;
-  //ensure valid data is passed
+  // ensure valid data is passed
   const data = JSON.parse(event.body);
   const certificate = schema.validate(data);
 &nbsp;
@@ -277,12 +261,11 @@ module.exports.create = async (event) =&gt; {
     console.error(`Failed validation for input data - ${certificate.error}`);
     return {
       statusCode: 400,
-      headers: { 'Content-Type': 'text/plain' },
       body: 'Failed validation, incorrect User data provided',
     };
   }
 &nbsp;
-  //encrypt credentials
+  // encrypt credentials
   const encryptedCredentials = await encryptUserPasswordP(data.credentials);
 &nbsp;
   const params = {
@@ -300,29 +283,25 @@ module.exports.create = async (event) =&gt; {
   try {
     await dynamoDb.put(params).promise();
     return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
+      statusCode: 201,
       body: JSON.stringify(params.Item),
     };
-  } catch(err) {
+  } catch (err) {
     console.error(`Failed to create user ${err}`);
     return {
       statusCode: err.statusCode || 501,
-      headers: { 'Content-Type': 'text/plain' },
       body: 'Couldn\'t create the user',
     };
   }
-};</pre></td></tr></table></pre>
+};
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Aug 24 2021 06:17:51 GMT+1000 (Australian Eastern Standard Time)
+                at Tue Aug 24 2021 07:09:29 GMT+1000 (Australian Eastern Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

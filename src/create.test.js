@@ -23,7 +23,7 @@ test('create - should create a user', async () => {
   };
   const res = await create(event);
 
-  expect(res.statusCode).toBe(200);
+  expect(res.statusCode).toBe(201);
 
   const expected = Object.keys(user).concat(['id']).sort();
   const actual = Object.keys(JSON.parse(res.body)).sort();

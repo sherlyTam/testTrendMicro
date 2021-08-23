@@ -32,7 +32,6 @@ module.exports.create = async (event) => {
     const vars = missing.join(', ');
     return {
       statusCode: 400,
-      headers: { 'Content-Type': 'text/plain' },
       body: `Missing required environment variables: ${vars}`,
     };
   }
@@ -45,7 +44,6 @@ module.exports.create = async (event) => {
     console.error(`Failed validation for input data - ${certificate.error}`);
     return {
       statusCode: 400,
-      headers: { 'Content-Type': 'text/plain' },
       body: 'Failed validation, incorrect User data provided',
     };
   }
@@ -68,18 +66,13 @@ module.exports.create = async (event) => {
   try {
     await dynamoDb.put(params).promise();
     return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
+      statusCode: 201,
       body: JSON.stringify(params.Item),
     };
   } catch (err) {
     console.error(`Failed to create user ${err}`);
     return {
       statusCode: err.statusCode || 501,
-      headers: { 'Content-Type': 'text/plain' },
       body: 'Couldn\'t create the user',
     };
   }

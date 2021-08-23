@@ -14,7 +14,6 @@ module.exports.list = async (event) => {
     const vars = missing.join(', ');
     return {
       statusCode: 400,
-      headers: { 'Content-Type': 'text/plain' },
       body: `Missing required environment variables: ${vars}`,
     };
   }
@@ -34,7 +33,6 @@ module.exports.list = async (event) => {
     console.error(`Failed to retreive users from dynamodb ${err}`);
     return {
       statusCode: err.statusCode || 501,
-      headers: { 'Content-Type': 'text/plain' },
       body: 'Couldn\'t fetch any users.',
     };
   }
